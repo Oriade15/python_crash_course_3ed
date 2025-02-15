@@ -1,0 +1,12 @@
+- In Python, you can declare variables to store data such as:
+    - strings
+    - integers
+    - boolean
+    - floating numbers
+    - lists
+    - tuples
+    - dictionaries
+    - sets
+- In Python, you can use conditional statements to that evaluate to True or False to execute logic
+- In Python, you can use loops to execute logic repeatedly (with a condition)
+- In Python, you can also declare functions and classes to encapsulate your code and make it easier to manage
