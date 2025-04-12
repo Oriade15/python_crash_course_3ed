@@ -47,7 +47,7 @@ class SidewaysShooter:
         if self.is_moving_up and self.rect.top > 0:
             self.y -= self.settings.shooter_speed
         if self.is_moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.y += self.settings_shooter_speed
+            self.y += self.settings.shooter_speed
 
         # Update rect object from self.y.
         self.rect.y = self.y
@@ -191,9 +191,9 @@ class Settings:
 
         # How quickly the game speeds up
         self.speedup_scale = 1.1
-        self.reset_settings()
+        self.reset_modifiable_settings()
 
-    def reset_settings(self):
+    def reset_modifiable_settings(self):
         """ Initialize settings that change throughout the game. """
         self.shooter_speed = 1.5
         self.bullet_speed = 2.5
@@ -203,7 +203,7 @@ class Settings:
         self.target_movement_direction = 1
 
     def increase_speed(self):
-        """ Increse speed settings. """
+        """ Increase speed settings. """
         self.shooter_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.target_speed *= self.speedup_scale
@@ -220,13 +220,13 @@ class Game:
 
         self.screen = pygame.display.set_mode((self.settings.screen_width, 
             self.settings.screen_height))
-        pygame.display.set_caption("Target Practice")
+        pygame.display.set_caption("Challenging Target Practice")
 
         self.shooter = SidewaysShooter(self)
         self.bullets = pygame.sprite.Group()
         self.target = Target(self)
 
-        # Start Alien Invasion in an inactive state.
+        # Start game in an inactive state.
         self.is_game_active = False
 
         # Make the Play button.
@@ -291,6 +291,9 @@ class Game:
         """ Start a new game when the player clicks Play. """
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.is_game_active:
+            # Reset game settings
+            self.settings.reset_modifiable_settings()
+
             self._start_game()
 
     def _start_game(self):
@@ -332,6 +335,10 @@ class Game:
         if hit_bullet:
             self.shooter.target_hit_count += 1
             self.bullets.remove(hit_bullet)
+
+            # Increase game speed every 3 times the target is hit
+            if self.shooter.target_hit_count > 0 and self.shooter.target_hit_count % 3 == 0:
+                self.settings.increase_speed()
 
     def _on_target_missed(self):
         """Respond to the target missed."""

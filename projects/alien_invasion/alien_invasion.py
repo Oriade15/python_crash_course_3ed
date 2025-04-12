@@ -143,6 +143,7 @@ class AlienInvasion:
         if button_clicked and not self.game_active:
             # Reset the game settings.
             self.settings.initialize_dynamic_settings()
+            
             self._start_game()
 
     def _start_game(self):
