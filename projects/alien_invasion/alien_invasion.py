@@ -49,6 +49,19 @@ class AlienInvasion:
         # Make the Play button.
         self.play_button = Button(self, "Play")
 
+        # TODO: Difficulty Level Select Buttons (Beginner, Intermediate, Pro).
+        self.beginner_button = Button(self, "Beginner", (255, 255, 255), (144, 238, 144), 24)
+        self.beginner_button.rect.midleft = self.screen.get_rect().midleft
+        self.beginner_button.rect.x += 20
+        self.intermediate_button = Button(self, "Intermediate", (0, 0, 0), (255, 193, 37), 24)
+        self.intermediate_button.rect.center = self.screen.get_rect().center
+        self.pro_button = Button(self, "Pro", (255, 255, 255), (128, 0, 128), 24)
+        self.pro_button.rect.midright = self.screen.get_rect().midright
+        self.pro_button.rect.x -= 20
+
+        # Track whether user is selecting level
+        self.is_selecting_level = False
+
     def _create_fleet(self):
         """ Create the fleet of aliens. """
         # Create an alien and keep adding aliens until there's no room left.
@@ -108,7 +121,7 @@ class AlienInvasion:
                 self._check_keyup_events(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                self._check_play_button(mouse_pos)
+                self._check_buttons(mouse_pos)
 
     def _check_keydown_events(self, event):
         """ Respond to keypresses. """
@@ -120,7 +133,7 @@ class AlienInvasion:
             sys.exit()
         elif event.key ==  pygame.K_p:
             if not self.game_active:
-                self._start_game()
+                self.is_selecting_level = True
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
 
@@ -137,20 +150,30 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
-    def _check_play_button(self, mouse_pos):
-        """ Start a new game when the player clicks Play. """
-        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked and not self.game_active:
-            # Reset the game settings.
-            self.settings.initialize_dynamic_settings()
-            
-            self._start_game()
+    def _check_buttons(self, mouse_pos):
+        """ Check whether any of these buttons is selected """
+        if self.is_selecting_level:
+            # Set the appropriate difficulty level for the game
+            if self.beginner_button.rect.collidepoint(mouse_pos):
+                self.settings.initialize_dynamic_settings("beginner")
+                self._start_game()
+            elif self.intermediate_button.rect.collidepoint(mouse_pos):
+                self.settings.initialize_dynamic_settings("intermediate")
+                self._start_game()
+            elif self.pro_button.rect.collidepoint(mouse_pos):
+                self.settings.initialize_dynamic_settings("pro")
+                self._start_game()
+        else:
+            if self.play_button.rect.collidepoint(mouse_pos) and not self.game_active:
+                # Prompt to select level
+                self.is_selecting_level = True
 
     def _start_game(self):
         """ Start the game. """
         # Reset the game statistics.
         self.stats.reset_stats()
         self.game_active = True
+        self.is_selecting_level = False
 
         # Get rid of any remaining bullets and aliens.
         self.bullets.empty()
@@ -257,9 +280,15 @@ class AlienInvasion:
         #  draws each alien at the position defined by its rect
         self.aliens.draw(self.screen)
 
-        # Draw the play button if the game is inactive.
+        # Draw the play button if the game is inactive and not selecting level.
         if not self.game_active:
-            self.play_button.draw_button()
+            if self.is_selecting_level:
+                self.beginner_button.draw_button()
+                self.intermediate_button.draw_button()
+                self.pro_button.draw_button()
+            else:
+                self.play_button.draw_button()
+
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()

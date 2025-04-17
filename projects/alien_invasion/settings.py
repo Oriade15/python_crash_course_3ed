@@ -24,14 +24,22 @@ class Settings:
         self.speedup_scale = 1.1
         self.initialize_dynamic_settings()
 
-    def initialize_dynamic_settings(self):
+    def initialize_dynamic_settings(self, mode="beginner"):
         """ Initialize settings that change throughout the game. """
-        self.ship_speed = 1.5
-        self.bullet_speed = 2.5
-        self.alien_speed = 1.0
-        # fleet_direction of 1 represents right; -1 represents left.
-        # Like an enumerated constant.
+        # fleet_direction of 1 represents right; -1 represents left (Like an enumerated constant).
         self.fleet_direction = 1
+        if mode == "beginner":
+            self.ship_speed = 1.5
+            self.bullet_speed = 2.5
+            self.alien_speed = 1.0
+        elif mode == "intermediate":
+            self.ship_speed = 2.0
+            self.bullet_speed = 3.0
+            self.alien_speed = 1.5
+        elif mode == "pro":
+            self.ship_speed = 2.5
+            self.bullet_speed = 3.5
+            self.alien_speed = 2.0  
 
     def increase_speed(self):
         """ Increse speed settings. """
