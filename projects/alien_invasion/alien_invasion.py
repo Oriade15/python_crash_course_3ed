@@ -117,7 +117,7 @@ class AlienInvasion:
         """ Respond to keypresses and mouse events. """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()
+                self._quit_game()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
@@ -133,7 +133,7 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
-            sys.exit()
+            self._quit_game()
         elif event.key ==  pygame.K_p:
             if not self.game_active:
                 self.is_selecting_difficulty_level = True
@@ -173,13 +173,7 @@ class AlienInvasion:
 
     def _start_game(self):
         """ Start the game. """
-        # Reset the game statistics.
-        self.stats.reset_stats()
-        self.sb.prep_score()
-        self.sb.prep_level()
-        self.sb.prep_ship_left()
-        self.game_active = True
-        self.is_selecting_difficulty_level = False
+        self._reset_game()
 
         # Get rid of any remaining bullets and aliens.
         self.bullets.empty()
@@ -192,6 +186,19 @@ class AlienInvasion:
         # Hide the mouse cursor.
         pygame.mouse.set_visible(False)
 
+    def _reset_game(self):
+        """ Reset the game statistics. """
+        self.stats.reset_stats()
+        self.sb.prep_score()
+        self.sb.prep_level()
+        self.sb.prep_ship_left()
+        self.game_active = True
+        self.is_selecting_difficulty_level = False
+
+    def _quit_game(self):
+        """ Save progress and quit the game. """
+        self.stats.save_high_score()
+        sys.exit()
 
     def _update_bullets(self):
         """ Update position of bullets and get rid of old bullets. """
@@ -219,14 +226,19 @@ class AlienInvasion:
             self.sb.check_high_score()
 
         if not self.aliens:
-            # Destroy existing bullets and create new fleet.
-            self.bullets.empty()
-            self._create_fleet()
-            self.settings.increase_speed()
+            self._start_new_level()
 
-            # Increase level.
-            self.stats.level += 1
-            self.sb.prep_level()
+    def _start_new_level(self):
+        """ Starts a new level """
+        # Destroy existing bullets and create new fleet.
+        self.bullets.empty()
+        self._create_fleet()
+        self.settings.increase_speed()
+
+        # Increase level.
+        self.stats.level += 1
+        self.sb.prep_level()
+
 
     def _update_aliens(self):
         """ Check if the fleet is at an edge, then update positions. """
@@ -262,7 +274,7 @@ class AlienInvasion:
             pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
-        """Check if any aliens have reached the bottom of the screen."""
+        """ Check if any aliens have reached the bottom of the screen. """
         for alien in self.aliens.sprites():
             if alien.rect.bottom >= self.settings.screen_height:
                 # Treat this the same as if the ship got hit.

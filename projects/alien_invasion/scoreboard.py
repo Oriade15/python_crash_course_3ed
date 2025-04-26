@@ -18,7 +18,10 @@ class ScoreBoard:
         self.text_color = (30, 30, 30)
         self.font = pygame.font.SysFont(None, 48)
 
-        # Prepare the initial score images.
+        self.prep_images()
+
+    def prep_images(self):
+        """ Prepare the initial score images. """
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
@@ -73,6 +76,9 @@ class ScoreBoard:
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
             self.prep_high_score()
+            
+            # Save new high score
+            self.stats.save_high_score()
 
     def show_score(self):
         """ Draw scores, level, and ships to the screen. """
