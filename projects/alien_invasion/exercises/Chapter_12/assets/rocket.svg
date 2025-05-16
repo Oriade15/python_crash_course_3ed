@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="48"
+   viewBox="0 -960 1920 1920"
+   width="48"
+   fill="#202020"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="rocket.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   inkscape:export-filename="rocket.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.4583333"
+     inkscape:cx="29.898305"
+     inkscape:cy="1.6271186"
+     inkscape:window-width="1008"
+     inkscape:window-height="481"
+     inkscape:window-x="0"
+     inkscape:window-y="100"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4" />
+  <path
+     d="m 638,505.8 q -20,-58 -37,-118 -17,-60 -27,-120 l -94,64 v 238 z m 294,-1070 q -96,102 -154,269 -58,167 -58,351 0,120 22,235 22,115 58,195 h 320 q 36,-80 58,-195 22,-115 22,-235 0,-184 -58,-351 -58,-167 -154,-269 -6,-6 -13,-9 -7,-3 -15,-3 -8,0 -15,3 -7,3 -13,9 z m 28,650 q -66,0 -113,-47 -47,-47 -47,-113 0,-66 47,-113 47,-47 113,-47 66,0 113,47 47,47 47,113 0,66 -47,113 -47,47 -113,47 z m 322,420 158,64 v -238 l -94,-64 q -10,60 -27,120 -17,60 -37,118 z m -260,-1252 q 168,144 253,354 85,210 85,478 l 168,112 q 34,22 53,58 19,36 19,76 v 356 q 0,42 -35,66 -35,24 -75,8 l -288,-116 H 718 l -288,116 q -40,16 -75,-8 -35,-24 -35,-66 v -356 q 0,-40 19,-76 19,-36 53,-58 l 168,-112 q 0,-268 85,-478 85,-210 253,-354 14,-10 30,-16 16,-6 32,-6 16,0 32,6 16,6 30,16 z"
+     id="path2"
+     style="stroke-width:2" />
+</svg>
