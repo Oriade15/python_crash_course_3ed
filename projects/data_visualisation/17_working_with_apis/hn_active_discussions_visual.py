@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 import requests
 import plotly.express as px
 
@@ -8,7 +10,7 @@ print(f"Status code: {r.status_code}")
 
 # Process information about each submission.
 submission_ids = r.json()
-submission_links, comments_counts = [], []
+submission_dicts = []
 for submission_id in submission_ids[:30]:
     # Make a new api call for each submission:
     url = f"https://hacker-news.firebaseio.com/v0/item/{submission_id}.json"
@@ -16,14 +18,27 @@ for submission_id in submission_ids[:30]:
     print(f"id: {submission_id}, status code: {r.status_code}")
     response_dict = r.json()
 
+    # Build a dictionary for each article, skip the ones without comments
+    submission_dict = {}
+    try:
+        submission_dict['comments'] = response_dict['descendants']
+    except KeyError:
+        print(f"Skipping discussion '{response_dict['title']}'")
+    else:
+        submission_dict['hn_link'] = f"https://news.ycombinator.com/item?id={submission_id}"
+        submission_dict['title'] = response_dict['title']
+        submission_dicts.append(submission_dict)
+
+submission_dicts = sorted(submission_dicts, key=itemgetter('comments'), reverse=True)
+
+# Extract titles, links and comments.
+submission_links, comments_counts = [], []
+for submission_dict in submission_dicts:
     # Turn submission titles into links to their discussion page.
-    try: 
-        submission_title = response_dict['title']
-        submission_link = f"<a href='https://news.ycombinator.com/item?id={submission_id}'>{submission_title}</a>"
-        submission_links.append(submission_link)
-        comments_counts.append(response_dict['descendants'])
-    except KeyError: 
-        continue # Skip submissions without comments.
+    submission_title = submission_dict['title']
+    submission_link = f"<a href='{submission_dict['hn_link']}'>{submission_title}</a>"
+    submission_links.append(submission_link)
+    comments_counts.append(submission_dict['comments'])
 
 # Make visualization.
 title = "Most active discussions on Hacker News"
