@@ -1,21 +1,15 @@
 import requests
 import plotly.express as px
 
-# Prompt user for a language to generate chart for
+from prompt_functions import prompt_user_choice
+
+# Prompt user for a language to generate chart for.
 languages = ['Python', 'JavaScript', 'Ruby', 'C', 
              'Java', 'Perl', 'Haskell', 'Go']
-is_prompting_active = True
-while is_prompting_active:
-    print("Which of these languages are you willing to explore its most popular projects visually?")
-    for index in range(len(languages)):
-        print(f"{index+1}. {languages[index]}")
-
-    choice_index = int(input("\nSelect an option (number): ")) - 1
-    if choice_index in range(len(languages)):
-        is_prompting_active = False
-        print(f"\nGenerating chart for {languages[choice_index]}...")
-    else:
-        print("You entered an invalid option. Please try again.\n")
+prompt= "Which of these languages are you willing to explore"
+prompt += " its most popular projects visually?"
+choice_index = prompt_user_choice(prompt, languages)
+print(f"\nGenerating chart for {languages[choice_index]}...")
 
 # Make an API call and check the response
 url = "https://api.github.com/search/repositories"
